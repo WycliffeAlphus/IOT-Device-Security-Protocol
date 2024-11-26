@@ -33,4 +33,27 @@ func StartServer() {
 	}
 }
 
+func handleClient(conn net.Conn) {
+	// Always clean up after the conversation
+	defer conn.Close()
 
+	log.Printf("New client connected: %s", conn.RemoteAddr())
+
+	// Prepare a message buffer
+	buffer := make([]byte, 1024)
+
+	// Keep the conversation going
+	for {
+		// Read message from client
+		n, err := conn.Read(buffer)
+		if err != nil {
+			log.Printf("Connection error: %v", err)
+			return
+		}
+
+		// Echo the message back
+		message := string(buffer[:n])
+		log.Printf("Received: %s", message)
+		conn.Write([]byte("Server says: " + message))
+	}
+}
