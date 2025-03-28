@@ -34,8 +34,8 @@ func StartServer() {
 
 	// routes
 	http.HandleFunc("/register", registerDevice)
-	http.HandleFunc("authenticate", authenticateDevice)
-	http.HandleFunc("update-firmaware", updateFirmware)
+	http.HandleFunc("/authenticate", authenticateDevice)
+	http.HandleFunc("/update-firmware", updateFirmware)
 
 	server := &http.Server{
 		Addr:      config.ServerPort,
