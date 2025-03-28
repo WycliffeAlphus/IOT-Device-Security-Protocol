@@ -31,6 +31,7 @@ func GenerateJWT(deviceID string) (string, error) {
 	return token.SignedString(jwtKey)
 }
 
+// ValidateToken validates the token string and returns the claims
 func ValidateToken(tokenString string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
