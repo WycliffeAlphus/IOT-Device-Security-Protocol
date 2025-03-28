@@ -27,3 +27,4 @@ openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out c
 
 # Cleanup
 rm *.csr *.srl
+```
