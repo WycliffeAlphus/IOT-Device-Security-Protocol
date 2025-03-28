@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"iotsec/auth"
+	"iotsec/firmware"
 
 	"iotsec/device"
 )
@@ -33,4 +34,17 @@ func authenticateDevice(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(map[string]string{"token": token})
 }
 
-func updateFirmware(w http.ResponseWriter, r *http.Request) {}
+func updateFirmware(w http.ResponseWriter, r *http.Request) {
+	var fw firmware.Firmware
+	if err := json.NewDecoder(r.Body).Decode(&fw); err != nil {
+		http.Error(w, "Invalid request", http.StatusBadRequest)
+		return
+	}
+
+	if firmware.VerifyFirmware(fw) {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"status": "Firmware updated successfully"})
+	} else {
+		http.Error(w, "Invalid firmware", http.StatusBadRequest)
+	}
+}
